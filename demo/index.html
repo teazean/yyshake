@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shake Me Please!</title>
+    <style>
+        p{
+            font-size: 60px;
+        }
+    </style>
+</head>
+<body>
+    <p id="log"></p>
+    <p id="log2">0</p>
+    <p id="log3"></p>
+    <p id="log4"></p>
+    <p id="log5"></p>
+    <script src="../yyshake.min.js"></script>
+    <script>
+        (function(){
+            if(!window.yyshake) {
+                alert("deviceMotion not supported!")
+                return;
+            }
+
+            // window.yyshake.addListener(function(){
+            //     document.querySelector("#log4").innerHTML = "shake shake one !!!"
+            // },true);
+            var l5 = document.querySelector("#log5");
+            var aa = {
+                begin:function(){
+                    l5.innerHTML += JSON.stringify(arguments) + '<br>';
+                },
+                lasting:function(){
+                    l5.innerHTML += JSON.stringify(arguments) + '<br>';
+                },
+                end:function(){
+                    l5.innerHTML += JSON.stringify(arguments) + '<br>';
+                    window.yyshake.removeListener(aa);
+                }
+            }
+            window.yyshake.addListener(aa);
+            window.yyshake.start();
+            setTimeout(function(){
+                yyshake.stop();
+            },10000);
+        })(); 
+    </script>
+</body>
+</html>

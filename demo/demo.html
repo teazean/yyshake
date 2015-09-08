@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Shake Demo</title>
+    <style>
+        .hand{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+        }
+
+        @-webkit-keyframes lasting{
+            0%,100%{
+                transform: rotateZ(-30deg);
+                -webkit-transform: rotateZ(-30deg);
+            }
+            50%{
+                transform: rotateZ(30deg);
+                -webkit-transform: rotateZ(30deg);
+            }
+        }
+
+        .hand.lasting{
+            animation: lasting 1s linear infinite;
+            -webkit-animation: lasting 1s linear infinite;
+        }
+
+        #prize{
+            position: absolute;
+            width: 100%;
+            top: 70%;
+            text-align: center;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <p id="log"></p>
+    <p id="log2">仅仅能摇3次！！！</p>
+    <p id="log3"></p>
+    <p id="log4"></p>
+    <p id="log5"></p>
+    <img id="hand" class="hand" src="images/hand.png">
+    <p id="prize"></p>
+    <script src="http://map.baidu.com/yyfm/yyshake/1.0.0/js/yyshake.min.js"></script>
+    <!--<script src="../yyshake.min.js"></script>-->
+    <script>
+        (function() {
+            var _compatModel = document.compatMode === "CSS1Compat";
+            var bodyWrapper = document.querySelector("body");
+            var hdom = document.documentElement;
+            function reset(){
+                var w_H = _compatModel ? hdom.clientHeight : document.body.clientHeight;
+                var w_W = _compatModel ? hdom.clientWidth : document.body.clientWidth;
+                bodyWrapper.style.height = w_H +"px";
+            }
+            document.addEventListener('DOMContentLoaded', reset);
+            window.addEventListener('pageshow', reset);
+            window.addEventListener('load', function(){
+                reset();
+                window.scrollTo(0,0);
+            });
+            window.addEventListener('resize', function(){
+                setTimeout(reset,0);
+            });
+        })();
+
+        function addClass(ele, name) {
+            var o = ele.className;
+            var os = o.split(" ");
+            var r = os.some(function(e, i){
+                if(e == name)
+                    return true;
+            });
+            if(r){
+                return ;
+            }
+            ele.className = o + " " + name;
+        }
+
+        function removeClass(ele, name) {
+            var o = ele.className;
+            var os = o.split(" ");
+            os = os.filter(function(e) {
+                if (e == name) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+            ele.className = os.join(" ");
+        }
+       
+        function $(s){
+            var ss = s.split(" ");
+            if(ss[ss.length - 1].indexOf("#") ===0) {
+                return document.querySelector(s);
+            } else {
+                return document.querySelectorAll(s);
+            }
+        }
+
+        var prizes = ["香蕉女郎的飞吻","泰国歌舞团门票一张","东山鸭头一两","50元移动充值卡","300元糯米代金券"];
+        var hand = $("#hand");
+        var prize = $("#prize");
+        var time = 0;
+        if (window.yyshake) {
+            var callback = {
+                begin: function() {
+                    // alert("begin");
+                    prize.style.visibility = "hidden";
+                    addClass(hand, "lasting");
+                },
+                end: function() {
+                    removeClass(hand, "lasting");
+                    // alert(hand.className);
+                    var index = Math.floor(Math.random()*(prizes.length));
+                    prize.innerHTML = "恭喜您获得了：" + prizes[index] + "!";
+                    prize.style.visibility = "visible";
+                    time++;
+                    if (time >= 3) {
+                        yyshake.stop();
+                    }
+                }
+            }
+            window.yyshake.addListener(callback);
+            yyshake.start();
+        } else {
+            alert("DeviceOrientation Not Supported!");
+        }
+    </script>
+</body>
+</html>
