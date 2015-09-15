@@ -22,6 +22,7 @@ http://man.baidu.com/app/search/lbs-opn/yyfm/modules_source/yyshake/
         alert("DeviceOrientation not supported!")
     }
 
+
 ###config()
 
 yyshake.config(options)，对摇一摇的判断做一些设置，目前提供的配置项有：
@@ -47,9 +48,9 @@ yyshake.config(options)，对摇一摇的判断做一些设置，目前提供的
     yyshake.stop();
 
 
-###yyshake.addListener(callback, one)
+###addListener(callback, one)
 
-对摇一摇动作添加监听者
+对摇一摇动作添加监听者，注意添加监听者，仅仅将监听者加入监听者队列。如果要开始监听摇一摇事件，还需要调用`yyshake.start()`
 
 + callback:
     1. callback是object，可提供三个值：
@@ -65,7 +66,7 @@ yyshake.config(options)，对摇一摇的判断做一些设置，目前提供的
 
         + end: function(){} , 摇一摇动作结束的回调函数
     2. callback是function, 则该callback作用同end，摇一摇动作结束的回调
-+ one: boolean ,设置该回调是否只执行一次
++ one: boolean ,设置该回调是否只执行一次，默认false
 
 事例1：
 
@@ -94,6 +95,6 @@ yyshake.config(options)，对摇一摇的判断做一些设置，目前提供的
 
 删除特定的监听者，callback可以为object，也可以是function，若callback=undefined，默认删除所有监听者
 
-    window.yyshake.remove();
+    window.yyshake.removeListener();
     //or
-    window.yyshake.remove(callback11);
+    window.yyshake.removeListener(callback11);
