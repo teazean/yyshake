@@ -5,7 +5,6 @@
 3. jquery中兼容不支持device-orientation的做法是监听throttledresize事件(window-resize事件的封装)
 
 
-http://man.baidu.com/app/search/lbs-opn/yyfm/modules_source/yyshake/
 
 ##简介
 
